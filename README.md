@@ -193,8 +193,8 @@ mvn spring-boot:run
 ```
 
 ### 3. Access the Application
-- **API Base URL**: `http://localhost:8081`
-- **H2 Database Console**: `http://localhost:8081/h2-console`
+- **API Base URL**: `http://localhost:8080`
+- **H2 Database Console**: `http://localhost:8080/h2-console`
   - JDBC URL: `jdbc:h2:mem:uzimastock`
   - Username: `sa`
   - Password: `password`
@@ -205,11 +205,24 @@ mvn spring-boot:run
 - `POST /auth/login` - Login and receive JWT token
 
 ### Item Management
-- `GET /api/stock/items` - Get all items
-- `GET /api/stock/items/{itemCode}` - Get item by code
-- `POST /api/stock/items` - Create new item
-- `PUT /api/stock/items/{itemCode}` - Update item
-- `DELETE /api/stock/items/{itemCode}` - Delete item
+- `GET /api/items` - Get all items
+- `GET /api/items/{itemCode}` - Get item by code
+- `POST /api/items` - Create new item
+- `PUT /api/items/{itemCode}` - Update item
+- `DELETE /api/items/{itemCode}` - Delete item
+- `GET /api/items/groups` - Get all item groups
+- `POST /api/items/groups` - Create new item group
+- `GET /api/items/uoms` - Get all units of measure
+- `POST /api/items/uoms` - Create new unit of measure
+
+### Batch & Serial Number Management
+- `GET /api/batches` - Get all batches
+- `GET /api/batches/{batchId}` - Get batch by ID
+- `POST /api/batches` - Create new batch
+- `GET /api/batches/item/{itemCode}` - Get batches by item
+- `GET /api/batches/serials` - Get all serial numbers
+- `GET /api/batches/serials/{serialNo}` - Get serial number by ID
+- `POST /api/batches/serials` - Create new serial number
 
 ### Warehouse Management
 - `GET /api/stock/warehouses` - Get all warehouses
@@ -218,10 +231,15 @@ mvn spring-boot:run
 - `PUT /api/stock/warehouses/{id}` - Update warehouse
 - `DELETE /api/stock/warehouses/{id}` - Delete warehouse
 
-### Stock Queries
+### Stock Management
+- `GET /api/stock` - Get all stock entries
 - `GET /api/stock/items/{itemCode}/stock` - Get stock levels for item
 - `GET /api/stock/warehouses/{id}/stock` - Get all stock in warehouse
 - `GET /api/stock/ledger` - Get stock ledger entries
+- `POST /api/stock-entries` - Create stock entry
+- `POST /api/stock-reconciliations` - Create stock reconciliation
+- `POST /api/stock-reservations` - Create stock reservation
+- `POST /api/opening-stocks` - Create opening stock
 
 ### Procurement
 - `GET /api/stock/material-requests` - Get material requests
@@ -278,13 +296,52 @@ All endpoints except `/auth/**` require authentication. Include the JWT token in
 src/main/java/com/uzimahealth/
 ├── UzimaStockApplication.java
 ├── config/DataLoader.java
-├── controller/StockController.java
-├── model/ (Stock entities)
-├── repository/ (Stock repositories)
+├── controller/
+│   ├── masters/
+│   │   ├── items/
+│   │   │   ├── ItemController.java
+│   │   │   ├── ItemAlternativeController.java
+│   │   │   ├── ItemAttributeController.java
+│   │   │   └── ItemVariantController.java
+│   │   ├── itemgroups/
+│   │   │   └── ItemGroupController.java
+│   │   ├── uoms/
+│   │   │   └── UOMController.java
+│   │   ├── BatchController.java
+│   │   ├── BrandController.java
+│   │   ├── InventoryDimensionController.java
+│   │   ├── ManufacturerController.java
+│   │   ├── ProductBundleController.java
+│   │   └── WarehouseController.java
+│   ├── transactions/
+│   │   ├── stock/
+│   │   │   ├── StockController.java
+│   │   │   ├── StockEntryController.java
+│   │   │   ├── StockReconciliationController.java
+│   │   │   ├── StockReservationController.java
+│   │   │   └── OpeningStockController.java
+│   │   ├── procurement/
+│   │   │   ├── MaterialRequestController.java
+│   │   │   └── PurchaseReceiptController.java
+│   │   └── shipping/
+│   │       ├── DeliveryNoteController.java
+│   │       └── PackingSlipController.java
+│   ├── quality/
+│   │   ├── QualityInspectionController.java
+│   │   └── QualityCheckController.java
+│   └── reports/
+│       ├── StockReportController.java
+│       └── InventoryReportController.java
+├── model/ (JPA entities)
+├── repository/ (JPA repositories)
 ├── security/
+│   ├── JwtUtil.java
+│   ├── JwtRequestFilter.java
+│   └── SecurityConfig.java
 └── service/
     ├── StockEventService.java
     ├── StockEventConsumer.java
+    ├── StockEventPublisher.java
     └── ... (Stock services)
 ```
 
@@ -294,7 +351,7 @@ src/main/java/com/uzimahealth/
 - **Spring Security**: Authentication with JWT
 - **Spring Data JPA**: Data persistence
 - **Spring Cloud Stream**: Event-driven messaging
-- **RabbitMQ**: Message broker
+- **Kafka**: Message broker for event streaming
 - **H2 Database**: In-memory database
 - **Maven**: Build management
 - **Java 17**: Programming language

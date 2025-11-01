@@ -1,11 +1,7 @@
-package com.uzimahealth.controller.masters;
+package com.uzimahealth.controller.masters.items;
 
 import com.uzimahealth.stock.Item;
-import com.uzimahealth.stock.ItemGroup;
-import com.uzimahealth.stock.UOM;
 import com.uzimahealth.repository.ItemRepository;
-import com.uzimahealth.repository.ItemGroupRepository;
-import com.uzimahealth.repository.UOMRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -27,12 +23,6 @@ class ItemControllerTest {
 
     @Mock
     private ItemRepository itemRepository;
-
-    @Mock
-    private ItemGroupRepository itemGroupRepository;
-
-    @Mock
-    private UOMRepository uomRepository;
 
     @InjectMocks
     private ItemController itemController;
@@ -188,81 +178,5 @@ class ItemControllerTest {
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
         verify(itemRepository, times(1)).findByItemCode("NONEXISTENT");
         verify(itemRepository, never()).delete(any(Item.class));
-    }
-
-    @Test
-    void getAllItemGroups_ShouldReturnAllItemGroups() {
-        // Arrange
-        ItemGroup group1 = new ItemGroup();
-        group1.setItemGroupName("Group 1");
-
-        ItemGroup group2 = new ItemGroup();
-        group2.setItemGroupName("Group 2");
-
-        List<ItemGroup> groups = Arrays.asList(group1, group2);
-        when(itemGroupRepository.findAll()).thenReturn(groups);
-
-        // Act
-        ResponseEntity<List<ItemGroup>> response = itemController.getAllItemGroups();
-
-        // Assert
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(2, response.getBody().size());
-        verify(itemGroupRepository, times(1)).findAll();
-    }
-
-    @Test
-    void createItemGroup_ShouldReturnCreatedItemGroup() {
-        // Arrange
-        ItemGroup group = new ItemGroup();
-        group.setItemGroupName("New Group");
-
-        when(itemGroupRepository.save(any(ItemGroup.class))).thenReturn(group);
-
-        // Act
-        ResponseEntity<ItemGroup> response = itemController.createItemGroup(group);
-
-        // Assert
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals("New Group", response.getBody().getItemGroupName());
-        verify(itemGroupRepository, times(1)).save(group);
-    }
-
-    @Test
-    void getAllUOMs_ShouldReturnAllUOMs() {
-        // Arrange
-        UOM uom1 = new UOM();
-        uom1.setUomName("PCS");
-
-        UOM uom2 = new UOM();
-        uom2.setUomName("BOX");
-
-        List<UOM> uoms = Arrays.asList(uom1, uom2);
-        when(uomRepository.findAll()).thenReturn(uoms);
-
-        // Act
-        ResponseEntity<List<UOM>> response = itemController.getAllUOMs();
-
-        // Assert
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(2, response.getBody().size());
-        verify(uomRepository, times(1)).findAll();
-    }
-
-    @Test
-    void createUOM_ShouldReturnCreatedUOM() {
-        // Arrange
-        UOM uom = new UOM();
-        uom.setUomName("KG");
-
-        when(uomRepository.save(any(UOM.class))).thenReturn(uom);
-
-        // Act
-        ResponseEntity<UOM> response = itemController.createUOM(uom);
-
-        // Assert
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals("KG", response.getBody().getUomName());
-        verify(uomRepository, times(1)).save(uom);
     }
 }

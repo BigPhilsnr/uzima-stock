@@ -1,11 +1,7 @@
-package com.uzimahealth.controller.masters;
+package com.uzimahealth.controller.masters.items;
 
 import com.uzimahealth.stock.Item;
-import com.uzimahealth.stock.ItemGroup;
-import com.uzimahealth.stock.UOM;
 import com.uzimahealth.repository.ItemRepository;
-import com.uzimahealth.repository.ItemGroupRepository;
-import com.uzimahealth.repository.UOMRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,13 +15,6 @@ public class ItemController {
     @Autowired
     private ItemRepository itemRepository;
 
-    @Autowired
-    private ItemGroupRepository itemGroupRepository;
-
-    @Autowired
-    private UOMRepository uomRepository;
-
-    // Item endpoints
     @GetMapping
     public ResponseEntity<List<Item>> getAllItems() {
         return ResponseEntity.ok(itemRepository.findAll());
@@ -63,27 +52,5 @@ public class ItemController {
             return ResponseEntity.ok().build();
         }
         return ResponseEntity.notFound().build();
-    }
-
-    // Item Group endpoints
-    @GetMapping("/groups")
-    public ResponseEntity<List<ItemGroup>> getAllItemGroups() {
-        return ResponseEntity.ok(itemGroupRepository.findAll());
-    }
-
-    @PostMapping("/groups")
-    public ResponseEntity<ItemGroup> createItemGroup(@RequestBody ItemGroup itemGroup) {
-        return ResponseEntity.ok(itemGroupRepository.save(itemGroup));
-    }
-
-    // UOM endpoints
-    @GetMapping("/uoms")
-    public ResponseEntity<List<UOM>> getAllUOMs() {
-        return ResponseEntity.ok(uomRepository.findAll());
-    }
-
-    @PostMapping("/uoms")
-    public ResponseEntity<UOM> createUOM(@RequestBody UOM uom) {
-        return ResponseEntity.ok(uomRepository.save(uom));
     }
 }

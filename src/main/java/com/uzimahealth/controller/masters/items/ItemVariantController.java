@@ -1,4 +1,4 @@
-package com.uzimahealth.controller.masters;
+package com.uzimahealth.controller.masters.items;
 
 import com.uzimahealth.stock.ItemVariant;
 import com.uzimahealth.repository.ItemVariantRepository;
