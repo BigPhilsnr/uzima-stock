@@ -47,7 +47,7 @@ public class BatchController {
 
     @PutMapping("/{batchId}")
     public ResponseEntity<Batch> updateBatch(@PathVariable String batchId, @RequestBody Batch batch) {
-        Batch existingBatch = batchRepository.findByBatchNo(batchId).orElse(null);
+        Batch existingBatch = batchRepository.findByBatchId(batchId).orElse(null);
         if (existingBatch != null) {
             batch.setBatchId(batchId);
             return ResponseEntity.ok(batchRepository.save(batch));
@@ -57,7 +57,7 @@ public class BatchController {
 
     @DeleteMapping("/{batchId}")
     public ResponseEntity<Void> deleteBatch(@PathVariable String batchId) {
-        Batch batch = batchRepository.findByBatchNo(batchId).orElse(null);
+        Batch batch = batchRepository.findByBatchId(batchId).orElse(null);
         if (batch != null) {
             batchRepository.delete(batch);
             return ResponseEntity.ok().build();
