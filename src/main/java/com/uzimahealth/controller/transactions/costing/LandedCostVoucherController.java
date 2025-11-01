@@ -1,4 +1,4 @@
-package com.uzimahealth.controller.transactions;
+package com.uzimahealth.controller.transactions.costing;
 
 import com.uzimahealth.stock.LandedCostVoucher;
 import com.uzimahealth.repository.LandedCostVoucherRepository;

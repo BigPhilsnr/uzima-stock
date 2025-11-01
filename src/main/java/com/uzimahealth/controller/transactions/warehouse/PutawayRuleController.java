@@ -1,4 +1,4 @@
-package com.uzimahealth.controller.transactions;
+package com.uzimahealth.controller.transactions.warehouse;
 
 import com.uzimahealth.stock.PutawayRule;
 import com.uzimahealth.repository.PutawayRuleRepository;

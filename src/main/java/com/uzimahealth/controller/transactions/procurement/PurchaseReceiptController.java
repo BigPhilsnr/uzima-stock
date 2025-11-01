@@ -1,4 +1,4 @@
-package com.uzimahealth.controller.transactions;
+package com.uzimahealth.controller.transactions.procurement;
 
 import com.uzimahealth.stock.PurchaseReceipt;
 import com.uzimahealth.stock.PurchaseReceiptItem;

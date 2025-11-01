@@ -1,4 +1,4 @@
-package com.uzimahealth.controller.transactions;
+package com.uzimahealth.controller.transactions.shipping;
 
 import com.uzimahealth.stock.PackingSlip;
 import com.uzimahealth.repository.PackingSlipRepository;
