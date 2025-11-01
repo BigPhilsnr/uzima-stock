@@ -11,6 +11,11 @@ public class Stock {
     @ManyToOne
     @JoinColumn(name = "item_id")
     private Item item;
+    private String itemCode; // For querying
+    @ManyToOne
+    @JoinColumn(name = "warehouse_id")
+    private Warehouse warehouse;
+    private String warehouseCode; // For querying
     private String batchNumber;
     private LocalDate expiryDate;
     private int quantity;
@@ -19,8 +24,11 @@ public class Stock {
 
     public Stock() {}
 
-    public Stock(Item item, String batchNumber, LocalDate expiryDate, int quantity, String store, double unitCost) {
+    public Stock(Item item, String itemCode, Warehouse warehouse, String warehouseCode, String batchNumber, LocalDate expiryDate, int quantity, String store, double unitCost) {
         this.item = item;
+        this.itemCode = itemCode;
+        this.warehouse = warehouse;
+        this.warehouseCode = warehouseCode;
         this.batchNumber = batchNumber;
         this.expiryDate = expiryDate;
         this.quantity = quantity;
@@ -33,6 +41,12 @@ public class Stock {
     public void setId(Long id) { this.id = id; }
     public Item getItem() { return item; }
     public void setItem(Item item) { this.item = item; }
+    public String getItemCode() { return itemCode; }
+    public void setItemCode(String itemCode) { this.itemCode = itemCode; }
+    public Warehouse getWarehouse() { return warehouse; }
+    public void setWarehouse(Warehouse warehouse) { this.warehouse = warehouse; }
+    public String getWarehouseCode() { return warehouseCode; }
+    public void setWarehouseCode(String warehouseCode) { this.warehouseCode = warehouseCode; }
     public String getBatchNumber() { return batchNumber; }
     public void setBatchNumber(String batchNumber) { this.batchNumber = batchNumber; }
     public LocalDate getExpiryDate() { return expiryDate; }

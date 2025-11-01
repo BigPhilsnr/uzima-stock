@@ -62,8 +62,8 @@ public class DataLoader implements CommandLineRunner {
         ItemGroup antibiotics = itemGroupRepository.save(new ItemGroup("Antibiotics", "Drugs", true, "Antibiotic medications"));
 
         // Sample Warehouses
-        Warehouse pharmacyStore = warehouseRepository.save(new Warehouse("Pharmacy Store", false, null, "Uzima Health", "Pharmacy Account", "Store", false));
-        Warehouse mainStore = warehouseRepository.save(new Warehouse("Main Store", false, null, "Uzima Health", "Main Account", "Store", false));
+        Warehouse pharmacyStore = warehouseRepository.save(new Warehouse("PHARM", "Pharmacy Store", false, null, "Uzima Health", "Pharmacy Account", "Store", false));
+        Warehouse mainStore = warehouseRepository.save(new Warehouse("MAIN", "Main Store", false, null, "Uzima Health", "Main Account", "Store", false));
 
         // Sample Items
         Item paracetamol = itemRepository.save(new Item("ITM001", "Paracetamol 500mg", "Drugs", "Tablets", "Pain reliever",
@@ -72,13 +72,13 @@ public class DataLoader implements CommandLineRunner {
                 true, false, null, "MediLab", "PharmaCorp", 1.2, 1.2, 20, "180", true, true, false, null, false));
 
         // Sample Batches
-        Batch batch1 = batchRepository.save(new Batch("BATCH001", paracetamol, LocalDate.of(2026, 12, 31), LocalDate.of(2024, 1, 1), "PharmaCorp", "Standard batch"));
-        Batch batch2 = batchRepository.save(new Batch("BATCH002", amoxicillin, LocalDate.of(2026, 6, 30), LocalDate.of(2024, 2, 1), "MediLab", "Standard batch"));
+        Batch batch1 = batchRepository.save(new Batch("BATCH001", paracetamol, "ITM001", LocalDate.of(2026, 12, 31), LocalDate.of(2024, 1, 1), "PharmaCorp", "Standard batch"));
+        Batch batch2 = batchRepository.save(new Batch("BATCH002", amoxicillin, "ITM002", LocalDate.of(2026, 6, 30), LocalDate.of(2024, 2, 1), "MediLab", "Standard batch"));
 
         // Sample Serial Numbers
-        SerialNo serial1 = serialNoRepository.save(new SerialNo("SN001", paracetamol, "Pharmacy Store", "BATCH001", "Active",
+        SerialNo serial1 = serialNoRepository.save(new SerialNo("SN001", paracetamol, "ITM001", "Pharmacy Store", "BATCH001", "Active",
                 "Purchase Receipt", "PR001", LocalDateTime.now(), null, null, null, "Uzima Health"));
-        SerialNo serial2 = serialNoRepository.save(new SerialNo("SN002", amoxicillin, "Pharmacy Store", "BATCH002", "Active",
+        SerialNo serial2 = serialNoRepository.save(new SerialNo("SN002", amoxicillin, "ITM002", "Pharmacy Store", "BATCH002", "Active",
                 "Purchase Receipt", "PR001", LocalDateTime.now(), null, null, null, "Uzima Health"));
 
         // Sample Stock Entry

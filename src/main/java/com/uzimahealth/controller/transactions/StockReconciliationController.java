@@ -100,6 +100,6 @@ public class StockReconciliationController {
     // Stock Reconciliation by warehouse
     @GetMapping("/warehouse/{warehouseCode}")
     public ResponseEntity<List<StockReconciliation>> getStockReconciliationsByWarehouse(@PathVariable String warehouseCode) {
-        return ResponseEntity.ok(stockReconciliationRepository.findByWarehouseCode(warehouseCode));
+        return ResponseEntity.ok(stockReconciliationRepository.findByWarehouse(warehouseCode));
     }
 }

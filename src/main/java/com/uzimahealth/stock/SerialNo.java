@@ -13,6 +13,7 @@ public class SerialNo {
     @ManyToOne
     @JoinColumn(name = "item_id")
     private Item item;
+    private String itemCode; // For querying
     private String warehouse;
     private String batchNo;
     private String status; // Active, Inactive, Delivered, etc.
@@ -28,12 +29,13 @@ public class SerialNo {
 
     public SerialNo() {}
 
-    public SerialNo(String serialNo, Item item, String warehouse, String batchNo, String status,
+    public SerialNo(String serialNo, Item item, String itemCode, String warehouse, String batchNo, String status,
                     String purchaseDocumentType, String purchaseDocumentNo, LocalDateTime purchaseDate,
                     String deliveryDocumentType, String deliveryDocumentNo, LocalDateTime deliveryDate,
                     String company) {
         this.serialNo = serialNo;
         this.item = item;
+        this.itemCode = itemCode;
         this.warehouse = warehouse;
         this.batchNo = batchNo;
         this.status = status;
@@ -55,6 +57,8 @@ public class SerialNo {
     public void setSerialNo(String serialNo) { this.serialNo = serialNo; }
     public Item getItem() { return item; }
     public void setItem(Item item) { this.item = item; }
+    public String getItemCode() { return itemCode; }
+    public void setItemCode(String itemCode) { this.itemCode = itemCode; }
     public String getWarehouse() { return warehouse; }
     public void setWarehouse(String warehouse) { this.warehouse = warehouse; }
     public String getBatchNo() { return batchNo; }

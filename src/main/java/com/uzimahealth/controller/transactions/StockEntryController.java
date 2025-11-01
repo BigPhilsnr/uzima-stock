@@ -100,6 +100,6 @@ public class StockEntryController {
     // Stock Entry by type
     @GetMapping("/type/{entryType}")
     public ResponseEntity<List<StockEntry>> getStockEntriesByType(@PathVariable String entryType) {
-        return ResponseEntity.ok(stockEntryRepository.findByEntryType(entryType));
+        return ResponseEntity.ok(stockEntryRepository.findByStockEntryType(entryType));
     }
 }

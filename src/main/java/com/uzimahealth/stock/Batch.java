@@ -14,6 +14,7 @@ public class Batch {
     @ManyToOne
     @JoinColumn(name = "item_id")
     private Item item;
+    private String itemCode; // For querying
     private LocalDate expiryDate;
     private LocalDate manufacturingDate;
     private String supplier;
@@ -23,10 +24,11 @@ public class Batch {
 
     public Batch() {}
 
-    public Batch(String batchId, Item item, LocalDate expiryDate, LocalDate manufacturingDate,
+    public Batch(String batchId, Item item, String itemCode, LocalDate expiryDate, LocalDate manufacturingDate,
                  String supplier, String description) {
         this.batchId = batchId;
         this.item = item;
+        this.itemCode = itemCode;
         this.expiryDate = expiryDate;
         this.manufacturingDate = manufacturingDate;
         this.supplier = supplier;
@@ -42,6 +44,8 @@ public class Batch {
     public void setBatchId(String batchId) { this.batchId = batchId; }
     public Item getItem() { return item; }
     public void setItem(Item item) { this.item = item; }
+    public String getItemCode() { return itemCode; }
+    public void setItemCode(String itemCode) { this.itemCode = itemCode; }
     public LocalDate getExpiryDate() { return expiryDate; }
     public void setExpiryDate(LocalDate expiryDate) { this.expiryDate = expiryDate; }
     public LocalDate getManufacturingDate() { return manufacturingDate; }

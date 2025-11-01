@@ -9,6 +9,8 @@ public class Warehouse {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(unique = true)
+    private String warehouseCode;
+    @Column(unique = true)
     private String warehouseName;
     private boolean isGroup = false;
     private String parentWarehouse;
@@ -21,8 +23,9 @@ public class Warehouse {
 
     public Warehouse() {}
 
-    public Warehouse(String warehouseName, boolean isGroup, String parentWarehouse, String company,
+    public Warehouse(String warehouseCode, String warehouseName, boolean isGroup, String parentWarehouse, String company,
                      String account, String warehouseType, boolean disabled) {
+        this.warehouseCode = warehouseCode;
         this.warehouseName = warehouseName;
         this.isGroup = isGroup;
         this.parentWarehouse = parentWarehouse;
@@ -37,6 +40,8 @@ public class Warehouse {
     // Getters and setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
+    public String getWarehouseCode() { return warehouseCode; }
+    public void setWarehouseCode(String warehouseCode) { this.warehouseCode = warehouseCode; }
     public String getWarehouseName() { return warehouseName; }
     public void setWarehouseName(String warehouseName) { this.warehouseName = warehouseName; }
     public boolean isGroup() { return isGroup; }

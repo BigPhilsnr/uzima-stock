@@ -9,5 +9,5 @@ import java.util.List;
 @Repository
 public interface StockReconciliationRepository extends JpaRepository<StockReconciliation, Long> {
     StockReconciliation findByStockReconciliationNo(String stockReconciliationNo);
-    List<StockReconciliation> findByWarehouseCode(String warehouseCode);
+    List<StockReconciliation> findByWarehouse(String warehouse);
 }

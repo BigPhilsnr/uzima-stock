@@ -59,7 +59,7 @@ public class StockController {
     @GetMapping("/ledger/{itemCode}/{warehouseCode}")
     public ResponseEntity<List<StockLedgerEntry>> getStockLedgerByItemAndWarehouse(
             @PathVariable String itemCode, @PathVariable String warehouseCode) {
-        return ResponseEntity.ok(stockLedgerEntryRepository.findByItemCodeAndWarehouseCode(itemCode, warehouseCode));
+        return ResponseEntity.ok(stockLedgerEntryRepository.findByItemCodeAndWarehouse(itemCode, warehouseCode));
     }
 
     @PostMapping("/ledger")
