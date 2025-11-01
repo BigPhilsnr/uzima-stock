@@ -41,8 +41,25 @@ public class BatchControllerApiTest {
 
     @Test
     public void testCreateBatch() {
+        String uniqueBatchId = "BATCH" + System.currentTimeMillis();
+        
+        // First create an item
+        Item item = new Item();
+        item.setItemCode("ITEM001");
+        item.setItemName("Test Item");
+        
+        Item savedItem = given()
+            .contentType(ContentType.JSON)
+            .body(item)
+        .when()
+            .post("/api/items")
+        .then()
+            .statusCode(200)
+            .extract().as(Item.class);
+        
         Batch batch = new Batch();
-        batch.setBatchId("BATCH001");
+        batch.setBatchId(uniqueBatchId);
+        batch.setItem(savedItem);
         batch.setItemCode("ITEM001");
         batch.setSupplier("Test Supplier");
 
@@ -53,16 +70,33 @@ public class BatchControllerApiTest {
             .post("/api/batches")
         .then()
             .statusCode(200)
-            .body("batchId", equalTo("BATCH001"))
+            .body("batchId", equalTo(uniqueBatchId))
             .body("itemCode", equalTo("ITEM001"));
     }
 
     @Test
     
     public void testGetBatchById() {
+        String uniqueBatchId = "BATCH" + System.currentTimeMillis();
+        
+        // First create an item
+        Item item = new Item();
+        item.setItemCode("ITEM001");
+        item.setItemName("Test Item");
+        
+        Item savedItem = given()
+            .contentType(ContentType.JSON)
+            .body(item)
+        .when()
+            .post("/api/items")
+        .then()
+            .statusCode(200)
+            .extract().as(Item.class);
+        
         // First create a batch
         Batch batch = new Batch();
-        batch.setBatchId("BATCH002");
+        batch.setBatchId(uniqueBatchId);
+        batch.setItem(savedItem);
         batch.setItemCode("ITEM001");
 
         given()
@@ -77,10 +111,10 @@ public class BatchControllerApiTest {
         given()
             .contentType(ContentType.JSON)
         .when()
-            .get("/api/batches/BATCH002")
+            .get("/api/batches/" + uniqueBatchId)
         .then()
             .statusCode(200)
-            .body("batchId", equalTo("BATCH002"));
+            .body("batchId", equalTo(uniqueBatchId));
     }
 
     @Test
@@ -110,8 +144,9 @@ public class BatchControllerApiTest {
     @Test
     
     public void testCreateSerialNumber() {
+        String uniqueSerialNo = "SERIAL" + System.currentTimeMillis();
         SerialNo serialNo = new SerialNo();
-        serialNo.setSerialNo("SERIAL001");
+        serialNo.setSerialNo(uniqueSerialNo);
         serialNo.setItemCode("ITEM001");
         serialNo.setBatchNo("BATCH001");
         serialNo.setStatus("Active");
@@ -123,15 +158,16 @@ public class BatchControllerApiTest {
             .post("/api/batches/serials")
         .then()
             .statusCode(200)
-            .body("serialNo", equalTo("SERIAL001"));
+            .body("serialNo", equalTo(uniqueSerialNo));
     }
 
     @Test
     
     public void testGetSerialNumber() {
+        String uniqueSerialNo = "SERIAL" + System.currentTimeMillis();
         // First create a serial number
         SerialNo serialNo = new SerialNo();
-        serialNo.setSerialNo("SERIAL002");
+        serialNo.setSerialNo(uniqueSerialNo);
         serialNo.setItemCode("ITEM001");
 
         given()
@@ -146,9 +182,9 @@ public class BatchControllerApiTest {
         given()
             .contentType(ContentType.JSON)
         .when()
-            .get("/api/batches/serials/SERIAL002")
+            .get("/api/batches/serials/" + uniqueSerialNo)
         .then()
             .statusCode(200)
-            .body("serialNo", equalTo("SERIAL002"));
+            .body("serialNo", equalTo(uniqueSerialNo));
     }
 }

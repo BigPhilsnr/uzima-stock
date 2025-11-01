@@ -1,12 +1,111 @@
 # Uzima Stock - Advanced Inventory Management
 
-A comprehensive inventory management system built with Spring Boot, implementing ERPNext-style stock management with event-driven integration to the Uzima Health HMIS system.
+A comprehensive inventory management system built with Spring Boot, with event-driven integration to the Uzima Health HMIS system.
+
+## 🏗️ System Architecture & Flow
+
+```mermaid
+graph TB
+    subgraph "External Systems"
+        HMIS[Uzima Health HMIS]
+        KAFKA[Kafka Message Broker]
+    end
+    
+    subgraph "Uzima Stock Microservice"
+        subgraph "API Layer"
+            AUTH[Authentication Controller<br/>/auth/login]
+            STOCK[Stock Controller<br/>/api/stock/*]
+            ITEM[Item Controller<br/>/api/items]
+            BATCH[Batch Controller<br/>/api/batches]
+            SERIAL[Serial No Controller<br/>/api/serial-numbers]
+        end
+        
+        subgraph "Business Logic Layer"
+            STOCK_SVC[Stock Service<br/>Stock Management]
+            EVENT_SVC[Event Service<br/>Event Processing]
+            ITEM_SVC[Item Service<br/>Item Operations]
+            BATCH_SVC[Batch Service<br/>Batch Tracking]
+        end
+        
+        subgraph "Data Access Layer"
+            STOCK_REPO[Stock Repository<br/>JPA Entities]
+            ITEM_REPO[Item Repository]
+            BATCH_REPO[Batch Repository]
+            SERIAL_REPO[Serial No Repository]
+        end
+        
+        subgraph "Event Processing"
+            CONSUMER[Event Consumer<br/>Kafka Listener]
+            PUBLISHER[Event Publisher<br/>Kafka Sender]
+        end
+        
+        subgraph "Database"
+            H2[(H2 In-Memory<br/>Database)]
+        end
+    end
+    
+    %% External Connections
+    HMIS -->|REST API Calls| STOCK
+    HMIS -->|Publish Events| KAFKA
+    KAFKA -->|Consume Events| CONSUMER
+    
+    %% Internal API Flow
+    STOCK --> STOCK_SVC
+    ITEM --> ITEM_SVC
+    BATCH --> BATCH_SVC
+    SERIAL --> BATCH_SVC
+    
+    %% Service to Repository Flow
+    STOCK_SVC --> STOCK_REPO
+    ITEM_SVC --> ITEM_REPO
+    BATCH_SVC --> BATCH_REPO
+    BATCH_SVC --> SERIAL_REPO
+    
+    %% Event Flow
+    CONSUMER --> EVENT_SVC
+    EVENT_SVC --> STOCK_SVC
+    STOCK_SVC --> PUBLISHER
+    PUBLISHER --> KAFKA
+    
+    %% Data Persistence
+    STOCK_REPO --> H2
+    ITEM_REPO --> H2
+    BATCH_REPO --> H2
+    SERIAL_REPO --> H2
+    
+    %% Security
+    AUTH -.->|JWT Token| STOCK
+    AUTH -.->|JWT Token| ITEM
+    AUTH -.->|JWT Token| BATCH
+    AUTH -.->|JWT Token| SERIAL
+    
+    classDef external fill:#e1f5fe
+    classDef api fill:#f3e5f5
+    classDef service fill:#e8f5e8
+    classDef data fill:#fff3e0
+    classDef event fill:#fce4ec
+    classDef db fill:#f5f5f5
+    
+    class HMIS,RABBIT external
+    class AUTH,STOCK,ITEM,BATCH,SERIAL api
+    class STOCK_SVC,EVENT_SVC,ITEM_SVC,BATCH_SVC service
+    class STOCK_REPO,ITEM_REPO,BATCH_REPO,SERIAL_REPO data
+    class CONSUMER,PUBLISHER event
+    class H2 db
+```
+
+### Data Flow Description:
+1. **API Requests**: Clients authenticate via `/auth/login` and access inventory APIs
+2. **Event Consumption**: Kafka events trigger automatic stock updates
+3. **Business Processing**: Services handle inventory logic and validation
+4. **Data Persistence**: JPA repositories manage database operations
+5. **Event Publishing**: Stock changes trigger outbound events for other services
 
 ## 📦 Microservice Architecture
 
 Uzima Stock is a dedicated inventory management microservice that provides:
 
-- **Complete ERPNext-style inventory management**
+- **Complete ERP-style inventory management**
 - **Event-driven communication** with Uzima Health HMIS
 - **Real-time stock tracking** with batch and serial number management
 - **Procurement workflow** from material requests to goods receipt
@@ -14,7 +113,7 @@ Uzima Stock is a dedicated inventory management microservice that provides:
 
 ## 🔄 Event-Driven Integration
 
-The service communicates with Uzima Health through RabbitMQ events:
+The service communicates with Uzima Health through Kafka events:
 
 ### Consumes Events:
 - **PRESCRIPTION_DISPENSED**: Automatically deducts stock when medications are dispensed
@@ -25,7 +124,7 @@ The service communicates with Uzima Health through RabbitMQ events:
 - **EXPIRY_ALERT**: Warns about expiring stock
 - **STOCK_MOVEMENT**: Reports all stock transactions
 
-## 📊 ERPNext-Style Doctypes
+## 📊 ERP-Style Doctypes
 
 ### Core Inventory Entities:
 - **Item**: Product catalog with hierarchical item groups
@@ -77,14 +176,14 @@ The service communicates with Uzima Health through RabbitMQ events:
 
 - Java 17 or higher
 - Maven 3.6 or higher
-- RabbitMQ (for event messaging)
+- Kafka (for event messaging)
 
 ## How to Run
 
-### 1. Start RabbitMQ
+### 1. Start Kafka
 ```bash
 # Using Docker
-docker run -d --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:3-management
+docker run -d --name kafka -p 9092:9092 -e KAFKA_ZOOKEEPER_CONNECT=localhost:2181 -e KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://localhost:9092 -e KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1 confluentinc/cp-kafka:latest
 ```
 
 ### 2. Start Uzima Stock Service
