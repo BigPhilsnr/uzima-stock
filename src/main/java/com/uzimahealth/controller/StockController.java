@@ -1,9 +1,9 @@
 package com.uzimahealth.controller;
 
-import com.uzimahealth.stock.Item;
-import com.uzimahealth.stock.Warehouse;
-import com.uzimahealth.repository.ItemRepository;
-import com.uzimahealth.repository.WarehouseRepository;
+import com.uzimahealth.stock.Stock;
+import com.uzimahealth.stock.StockLedgerEntry;
+import com.uzimahealth.repository.StockRepository;
+import com.uzimahealth.repository.StockLedgerEntryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,37 +15,55 @@ import java.util.List;
 public class StockController {
 
     @Autowired
-    private ItemRepository itemRepository;
+    private StockRepository stockRepository;
 
     @Autowired
-    private WarehouseRepository warehouseRepository;
+    private StockLedgerEntryRepository stockLedgerEntryRepository;
 
-    @GetMapping("/items")
-    public ResponseEntity<List<Item>> getAllItems() {
-        return ResponseEntity.ok(itemRepository.findAll());
+    // Stock levels endpoints
+    @GetMapping("/levels")
+    public ResponseEntity<List<Stock>> getAllStockLevels() {
+        return ResponseEntity.ok(stockRepository.findAll());
     }
 
-    @GetMapping("/items/{itemCode}")
-    public ResponseEntity<Item> getItemByCode(@PathVariable String itemCode) {
-        Item item = itemRepository.findByItemCode(itemCode).orElse(null);
-        if (item != null) {
-            return ResponseEntity.ok(item);
+    @GetMapping("/levels/{itemCode}/{warehouseCode}")
+    public ResponseEntity<Stock> getStockLevel(@PathVariable String itemCode, @PathVariable String warehouseCode) {
+        Stock stock = stockRepository.findByItemCodeAndWarehouseCode(itemCode, warehouseCode).orElse(null);
+        if (stock != null) {
+            return ResponseEntity.ok(stock);
         }
         return ResponseEntity.notFound().build();
     }
 
-    @GetMapping("/warehouses")
-    public ResponseEntity<List<Warehouse>> getAllWarehouses() {
-        return ResponseEntity.ok(warehouseRepository.findAll());
+    @GetMapping("/levels/item/{itemCode}")
+    public ResponseEntity<List<Stock>> getStockLevelsByItem(@PathVariable String itemCode) {
+        return ResponseEntity.ok(stockRepository.findByItemCode(itemCode));
     }
 
-    @PostMapping("/items")
-    public ResponseEntity<Item> createItem(@RequestBody Item item) {
-        return ResponseEntity.ok(itemRepository.save(item));
+    @GetMapping("/levels/warehouse/{warehouseCode}")
+    public ResponseEntity<List<Stock>> getStockLevelsByWarehouse(@PathVariable String warehouseCode) {
+        return ResponseEntity.ok(stockRepository.findByWarehouseCode(warehouseCode));
     }
 
-    @PostMapping("/warehouses")
-    public ResponseEntity<Warehouse> createWarehouse(@RequestBody Warehouse warehouse) {
-        return ResponseEntity.ok(warehouseRepository.save(warehouse));
+    // Stock ledger endpoints
+    @GetMapping("/ledger")
+    public ResponseEntity<List<StockLedgerEntry>> getAllStockLedgerEntries() {
+        return ResponseEntity.ok(stockLedgerEntryRepository.findAll());
+    }
+
+    @GetMapping("/ledger/{itemCode}")
+    public ResponseEntity<List<StockLedgerEntry>> getStockLedgerByItem(@PathVariable String itemCode) {
+        return ResponseEntity.ok(stockLedgerEntryRepository.findByItemCode(itemCode));
+    }
+
+    @GetMapping("/ledger/{itemCode}/{warehouseCode}")
+    public ResponseEntity<List<StockLedgerEntry>> getStockLedgerByItemAndWarehouse(
+            @PathVariable String itemCode, @PathVariable String warehouseCode) {
+        return ResponseEntity.ok(stockLedgerEntryRepository.findByItemCodeAndWarehouseCode(itemCode, warehouseCode));
+    }
+
+    @PostMapping("/ledger")
+    public ResponseEntity<StockLedgerEntry> createStockLedgerEntry(@RequestBody StockLedgerEntry entry) {
+        return ResponseEntity.ok(stockLedgerEntryRepository.save(entry));
     }
 }
