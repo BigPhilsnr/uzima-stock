@@ -1,4 +1,4 @@
-package com.uzimahealth.controller;
+package com.uzimahealth.controller.masters;
 
 import com.uzimahealth.stock.ItemAttribute;
 import com.uzimahealth.repository.ItemAttributeRepository;

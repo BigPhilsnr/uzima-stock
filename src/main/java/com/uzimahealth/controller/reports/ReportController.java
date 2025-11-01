@@ -1,4 +1,4 @@
-package com.uzimahealth.controller;
+package com.uzimahealth.controller.reports;
 
 import com.uzimahealth.service.StockReportService;
 import com.uzimahealth.stock.StockLedgerEntry;

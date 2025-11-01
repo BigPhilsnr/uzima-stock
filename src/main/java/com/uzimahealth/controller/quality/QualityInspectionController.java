@@ -1,4 +1,4 @@
-package com.uzimahealth.controller;
+package com.uzimahealth.controller.quality;
 
 import com.uzimahealth.stock.QualityInspection;
 import com.uzimahealth.repository.QualityInspectionRepository;

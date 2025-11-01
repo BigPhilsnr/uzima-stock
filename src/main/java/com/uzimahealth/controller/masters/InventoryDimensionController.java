@@ -1,4 +1,4 @@
-package com.uzimahealth.controller;
+package com.uzimahealth.controller.masters;
 
 import com.uzimahealth.stock.InventoryDimension;
 import com.uzimahealth.repository.InventoryDimensionRepository;

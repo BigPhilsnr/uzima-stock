@@ -1,4 +1,4 @@
-package com.uzimahealth.controller;
+package com.uzimahealth.controller.transactions;
 
 import com.uzimahealth.stock.StockReservation;
 import com.uzimahealth.repository.StockReservationRepository;
