@@ -25,7 +25,7 @@ public class ItemAttribute {
 
     @ElementCollection
     @CollectionTable(name = "item_attribute_values", joinColumns = @JoinColumn(name = "item_attribute_id"))
-    @Column(name = "value")
+    @Column(name = "attribute_value")
     private List<String> values; // for select type
 
     @Column
