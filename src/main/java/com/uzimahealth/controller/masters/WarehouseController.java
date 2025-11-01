@@ -1,4 +1,4 @@
-package com.uzimahealth.controller;
+package com.uzimahealth.controller.masters;
 
 import com.uzimahealth.stock.Warehouse;
 import com.uzimahealth.repository.WarehouseRepository;

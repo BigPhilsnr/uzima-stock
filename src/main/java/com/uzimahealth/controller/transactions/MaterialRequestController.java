@@ -1,4 +1,4 @@
-package com.uzimahealth.controller;
+package com.uzimahealth.controller.transactions;
 
 import com.uzimahealth.stock.MaterialRequest;
 import com.uzimahealth.stock.MaterialRequestItem;

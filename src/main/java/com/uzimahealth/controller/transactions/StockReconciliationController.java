@@ -1,4 +1,4 @@
-package com.uzimahealth.controller;
+package com.uzimahealth.controller.transactions;
 
 import com.uzimahealth.stock.StockReconciliation;
 import com.uzimahealth.stock.StockReconciliationItem;
