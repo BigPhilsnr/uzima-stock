@@ -20,9 +20,9 @@ public class WarehouseController {
         return ResponseEntity.ok(warehouseRepository.findAll());
     }
 
-    @GetMapping("/{warehouseCode}")
-    public ResponseEntity<Warehouse> getWarehouseByCode(@PathVariable String warehouseCode) {
-        Warehouse warehouse = warehouseRepository.findByWarehouseCode(warehouseCode).orElse(null);
+    @GetMapping("/{warehouseName}")
+    public ResponseEntity<Warehouse> getWarehouseByName(@PathVariable String warehouseName) {
+        Warehouse warehouse = warehouseRepository.findByWarehouseName(warehouseName).orElse(null);
         if (warehouse != null) {
             return ResponseEntity.ok(warehouse);
         }
@@ -34,19 +34,19 @@ public class WarehouseController {
         return ResponseEntity.ok(warehouseRepository.save(warehouse));
     }
 
-    @PutMapping("/{warehouseCode}")
-    public ResponseEntity<Warehouse> updateWarehouse(@PathVariable String warehouseCode, @RequestBody Warehouse warehouse) {
-        Warehouse existingWarehouse = warehouseRepository.findByWarehouseCode(warehouseCode).orElse(null);
+    @PutMapping("/{warehouseName}")
+    public ResponseEntity<Warehouse> updateWarehouse(@PathVariable String warehouseName, @RequestBody Warehouse warehouse) {
+        Warehouse existingWarehouse = warehouseRepository.findByWarehouseName(warehouseName).orElse(null);
         if (existingWarehouse != null) {
-            warehouse.setWarehouseCode(warehouseCode);
+            warehouse.setWarehouseName(warehouseName);
             return ResponseEntity.ok(warehouseRepository.save(warehouse));
         }
         return ResponseEntity.notFound().build();
     }
 
-    @DeleteMapping("/{warehouseCode}")
-    public ResponseEntity<Void> deleteWarehouse(@PathVariable String warehouseCode) {
-        Warehouse warehouse = warehouseRepository.findByWarehouseCode(warehouseCode).orElse(null);
+    @DeleteMapping("/{warehouseName}")
+    public ResponseEntity<Void> deleteWarehouse(@PathVariable String warehouseName) {
+        Warehouse warehouse = warehouseRepository.findByWarehouseName(warehouseName).orElse(null);
         if (warehouse != null) {
             warehouseRepository.delete(warehouse);
             return ResponseEntity.ok().build();
