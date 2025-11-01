@@ -25,6 +25,10 @@ public class Item {
     private String shelfLifeInDays;
     private boolean isPurchaseItem = true;
     private boolean isSalesItem = true;
+    private boolean inspectionRequired = false;
+    @ManyToOne
+    @JoinColumn(name = "quality_inspection_template_id")
+    private QualityInspectionTemplate qualityInspectionTemplate;
     private boolean disabled = false;
     private LocalDateTime creation;
     private LocalDateTime modified;
@@ -34,7 +38,8 @@ public class Item {
     public Item(String itemCode, String itemName, String itemGroup, String stockUom, String description,
                 boolean isStockItem, boolean hasVariants, String variantOf, String brand, String manufacturer,
                 double standardRate, double valuationRate, int minOrderQty, String shelfLifeInDays,
-                boolean isPurchaseItem, boolean isSalesItem, boolean disabled) {
+                boolean isPurchaseItem, boolean isSalesItem, boolean inspectionRequired,
+                QualityInspectionTemplate qualityInspectionTemplate, boolean disabled) {
         this.itemCode = itemCode;
         this.itemName = itemName;
         this.itemGroup = itemGroup;
@@ -51,6 +56,8 @@ public class Item {
         this.shelfLifeInDays = shelfLifeInDays;
         this.isPurchaseItem = isPurchaseItem;
         this.isSalesItem = isSalesItem;
+        this.inspectionRequired = inspectionRequired;
+        this.qualityInspectionTemplate = qualityInspectionTemplate;
         this.disabled = disabled;
         this.creation = LocalDateTime.now();
         this.modified = LocalDateTime.now();
@@ -91,6 +98,10 @@ public class Item {
     public void setPurchaseItem(boolean purchaseItem) { isPurchaseItem = purchaseItem; }
     public boolean isSalesItem() { return isSalesItem; }
     public void setSalesItem(boolean salesItem) { isSalesItem = salesItem; }
+    public boolean isInspectionRequired() { return inspectionRequired; }
+    public void setInspectionRequired(boolean inspectionRequired) { this.inspectionRequired = inspectionRequired; }
+    public QualityInspectionTemplate getQualityInspectionTemplate() { return qualityInspectionTemplate; }
+    public void setQualityInspectionTemplate(QualityInspectionTemplate qualityInspectionTemplate) { this.qualityInspectionTemplate = qualityInspectionTemplate; }
     public boolean isDisabled() { return disabled; }
     public void setDisabled(boolean disabled) { this.disabled = disabled; }
     public LocalDateTime getCreation() { return creation; }
